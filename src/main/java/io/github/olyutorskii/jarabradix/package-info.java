@@ -5,6 +5,11 @@
 
 /**
  * JarabraDix is a integer value to Arabic decimal sequence converter.
+ *
+ * <p>It's similar to {@link java.lang.Integer#toString(int)}
+ * and {@link java.io.PrintWriter#print(int)}.
+ * But, ther is no String constructor happen.
+ * It's mean, GC-friendly.
  */
 
 package io.github.olyutorskii.jarabradix;
