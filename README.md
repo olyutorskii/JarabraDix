@@ -1,5 +1,8 @@
 # JarabraDix #
 
+[![Build Status](https://travis-ci.org/olyutorskii/JarabraDix.svg?branch=master)]
+(https://travis-ci.org/olyutorskii/JarabraDix)
+
 -----------------------------------------------------------------------
 
 ## What is JarabraDix ? ##
@@ -9,6 +12,10 @@ that supports **binary integer value to decimal sequence conversion**.
 
 * Yes, it will substitute implementations such as
 `Integer.toString(int)`, `System.out(=PrintStream).println(int)` and so on.
+
+* **JarabraDix** was forked from [**DoubDabC**][DDC].
+We decided to separate GC-friendry-API idea
+from DoubDabC implementation.
 
 
 ## DoubDabC implementation ##
@@ -56,6 +63,7 @@ Just compile Java sources under `src/main/java/` if you don't use Maven.
 * By [olyutorskii](https://github.com/olyutorskii) at 2017
 
 
+[DDC]: https://github.com/olyutorskii/DoubDabC
 [MIT]: https://opensource.org/licenses/MIT
 
 
