@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DecimalWriter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JarabraDix</a> &gt; <a href="index.source.html" class="el_package">io.github.olyutorskii.jarabradix</a> &gt; <span class="el_source">DecimalWriter.java</span></div><h1>DecimalWriter.java</h1><pre class="source lang-java linenums">/*
+ * License : The MIT License
+ * Copyright(c) 2017 olyutorskii
+ */
+
+package io.github.olyutorskii.jarabradix;
+
+import java.io.FilterWriter;
+import java.io.IOException;
+import java.io.Writer;
+
+/**
+ * Writer for integer(int and long) value printing.
+ *
+ * &lt;p&gt;It's similar to {@link java.io.PrintWriter}
+ * but, GC-friendly.
+ *
+ * &lt;p&gt;There is thread-safe methods only.
+ *
+ * @see java.io.PrintWriter
+ */
+public class DecimalWriter extends FilterWriter{
+
+    private static final int CBUFLEN = 20;
+    private static final int LASTPOS = CBUFLEN - 1;
+
+    static{
+        assert CBUFLEN == ArabicEncoder.MINLEN_LONG;
+<span class="fc" id="L29">    }</span>
+
+
+    private final char[] cbuf;
+    private final Object bufLock;
+
+
+    /**
+     * Constructor.
+     * @param out char output stream
+     */
+    public DecimalWriter(Writer out){
+<span class="fc" id="L41">        super(out);</span>
+<span class="fc" id="L42">        this.cbuf = new char[CBUFLEN];</span>
+<span class="fc" id="L43">        this.bufLock = new Object();</span>
+<span class="fc" id="L44">        return;</span>
+    }
+
+
+    /**
+     * Print int value.
+     *
+     * &lt;p&gt;It's similar to {@link java.io.PrintWriter#print(int)}.
+     *
+     * @param iVal int value
+     * @throws IOException output error
+     * @see java.io.PrintWriter#print(int)
+     */
+    public void print(int iVal) throws IOException{
+<span class="fc" id="L58">        synchronized(this.bufLock){</span>
+<span class="fc" id="L59">            int span = ArabicEncoder.int2Arabic(iVal, this.cbuf, LASTPOS);</span>
+<span class="fc" id="L60">            int headPos = CBUFLEN - span;</span>
+<span class="fc" id="L61">            write(this.cbuf, headPos, span);</span>
+<span class="pc" id="L62">        }</span>
+<span class="fc" id="L63">        return;</span>
+    }
+
+    /**
+     * Print long value.
+     *
+     * &lt;p&gt;It's similar to {@link java.io.PrintWriter#print(long)}.
+     *
+     * @param lVal long value
+     * @throws IOException output error
+     * @see java.io.PrintWriter#print(long)
+     */
+    public void print(long lVal) throws IOException{
+<span class="fc" id="L76">        synchronized(this.bufLock){</span>
+<span class="fc" id="L77">            int span = ArabicEncoder.long2Arabic(lVal, this.cbuf, LASTPOS);</span>
+<span class="fc" id="L78">            int headPos = CBUFLEN - span;</span>
+<span class="fc" id="L79">            write(this.cbuf, headPos, span);</span>
+<span class="pc" id="L80">        }</span>
+<span class="fc" id="L81">        return;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

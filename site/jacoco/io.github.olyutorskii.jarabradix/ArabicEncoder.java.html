@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArabicEncoder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JarabraDix</a> &gt; <a href="index.source.html" class="el_package">io.github.olyutorskii.jarabradix</a> &gt; <span class="el_source">ArabicEncoder.java</span></div><h1>ArabicEncoder.java</h1><pre class="source lang-java linenums">/*
+ * License : The MIT License
+ * Copyright(c) 2017 olyutorskii
+ */
+
+package io.github.olyutorskii.jarabradix;
+
+/**
+ * Convert integer value to Arabic-decimal character sequence.
+ *
+ * &lt;p&gt;It's similar to {@link java.lang.Integer#toString(int)}
+ * but, GC-friendly.
+ *
+ * &lt;p&gt;char buffer grows towards a younger index.
+ */
+<span class="pc bpc" id="L16" title="1 of 2 branches missed.">public final class ArabicEncoder {</span>
+
+    /** Required char-array length to convert any int value. */
+    public static final int MINLEN_INT  = 11;
+
+    /** Required char-array length to convert any long value. */
+    public static final int MINLEN_LONG = 20;
+
+    private static final String MINTXT_INT  =          &quot;-2147483648&quot;;
+    private static final String MINTXT_LONG = &quot;-9223372036854775808&quot;;
+
+    private static final int DECA = 10;
+    private static final long UINT_MAX = (1L &lt;&lt; 32) - 1L;  //  4294967295L
+
+    private static final int CHUNKUNIT = DECA * DECA;
+    private static final int CHUNKLIMIT = 65536;
+
+    private static final int DIV10SFT = 19;        // 2^19 = 524288
+    private static final int DIV10NUME = 52429;    // near equal 524288 / 10
+
+    private static final int ARABICUC_MASK = 0b0011_0000;
+
+    private static final char[] HECT1;
+    private static final char[] HECT0;
+
+
+    static{
+<span class="pc bpc" id="L43" title="2 of 4 branches missed.">        assert MINTXT_INT .equals(Integer.toString(Integer.MIN_VALUE));</span>
+<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        assert MINTXT_LONG.equals(Long   .toString(Long   .MIN_VALUE));</span>
+<span class="pc bpc" id="L45" title="2 of 4 branches missed.">        assert MINLEN_INT  == MINTXT_INT .length();</span>
+<span class="pc bpc" id="L46" title="2 of 4 branches missed.">        assert MINLEN_LONG == MINTXT_LONG.length();</span>
+
+<span class="fc" id="L48">        HECT1 = new char[CHUNKUNIT];</span>
+<span class="fc" id="L49">        HECT0 = new char[CHUNKUNIT];</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for(int idx = 0; idx &lt; CHUNKUNIT; idx++){</span>
+<span class="fc" id="L51">            final int h1 = idx / DECA;</span>
+<span class="fc" id="L52">            final int h0 = idx % DECA;</span>
+<span class="fc" id="L53">            HECT1[idx] = Character.forDigit(h1, DECA);</span>
+<span class="fc" id="L54">            HECT0[idx] = Character.forDigit(h0, DECA);</span>
+        }
+    }
+
+    static{
+        assert CHUNKLIMIT &gt;= CHUNKUNIT / DECA;
+        assert (long)(CHUNKLIMIT - 1) * (long)DIV10NUME &lt;= UINT_MAX;
+
+        assert DIV10NUME - ((1 &lt;&lt; DIV10SFT) / DECA) &lt;= 1;
+
+        assert ( 1         * DIV10NUME) &gt;&gt;&gt; DIV10SFT == 0;
+        assert ((DECA - 1) * DIV10NUME) &gt;&gt;&gt; DIV10SFT == 0;
+        assert ( DECA      * DIV10NUME) &gt;&gt;&gt; DIV10SFT == 1;
+        assert ((CHUNKLIMIT - 1) * DIV10NUME) &gt;&gt;&gt; DIV10SFT
+            ==  (CHUNKLIMIT - 1) / DECA;
+
+<span class="pc bpc" id="L70" title="2 of 4 branches missed.">        assert Character.forDigit(9, DECA) == (ARABICUC_MASK | 9);</span>
+<span class="fc" id="L71">    }</span>
+
+
+    /**
+     * Hidden constructor.
+     */
+<span class="nc" id="L77">    private ArabicEncoder(){</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        assert false;</span>
+<span class="nc" id="L79">    }</span>
+
+
+    /**
+     * Convert int value to Arabic-decimal sequence.
+     *
+     * &lt;p&gt;Result will be aligned to the last array position.
+     *
+     * @param iVal int value
+     * @param cbuf char buffer array output
+     * @return stored digits sequence (and sign) length
+     * @throws IndexOutOfBoundsException too small array
+     * @see java.lang.Integer#toString(int)
+     */
+    public static int int2Arabic(final int iVal, final char[] cbuf)
+            throws IndexOutOfBoundsException{
+<span class="fc" id="L95">        int lastPos = cbuf.length - 1;</span>
+<span class="fc" id="L96">        return int2Arabic(iVal, cbuf, lastPos);</span>
+    }
+
+    /**
+     * Convert int value to Arabic-decimal sequence.
+     *
+     * &lt;p&gt;Result will be aligned to the specified tail position.
+     *
+     * @param iVal int value
+     * @param cbuf char buffer array output
+     * @param lastPos index of tail position in array
+     * @return stored digits sequence (and sign) length
+     * @throws IndexOutOfBoundsException invalid position
+     * @see java.lang.Integer#toString(int)
+     */
+    public static int int2Arabic(
+            final int iVal,
+            final char[] cbuf,
+            final int lastPos
+    )
+            throws IndexOutOfBoundsException{
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        if(iVal == Integer.MIN_VALUE){</span>
+<span class="fc" id="L118">            return cramIntMin(cbuf, lastPos);</span>
+        }
+
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        final boolean negative = iVal &lt; 0;</span>
+<span class="fc" id="L122">        int cidx = lastPos;</span>
+        int absVal32;
+        int div32;
+
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if(negative){</span>
+<span class="fc" id="L127">            absVal32 = -iVal;</span>
+        }else{
+<span class="fc" id="L129">            absVal32 =  iVal;</span>
+        }
+
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        while(absVal32 &gt;= CHUNKLIMIT){</span>
+<span class="fc" id="L133">            div32         = absVal32 / CHUNKUNIT;</span>
+<span class="fc" id="L134">            final int mod = absVal32 % CHUNKUNIT;</span>
+<span class="fc" id="L135">            absVal32 = div32;</span>
+
+<span class="fc" id="L137">            cbuf[cidx--] = HECT0[mod];</span>
+<span class="fc" id="L138">            cbuf[cidx--] = HECT1[mod];</span>
+<span class="fc" id="L139">        }</span>
+
+        do{
+<span class="fc" id="L142">            div32 = (absVal32 * DIV10NUME) &gt;&gt;&gt; DIV10SFT;</span>
+            //  div32 = abs32 * 52429 / 524288
+            //        = floor(abs32 * 0.1000003814697265625);
+            //        = abs32 / 10;
+
+<span class="fc" id="L147">            final int mod = absVal32 % DECA;</span>
+<span class="fc" id="L148">            absVal32 = div32;</span>
+
+<span class="fc" id="L150">            cbuf[cidx--] = (char)(mod | ARABICUC_MASK);</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        }while(div32 &gt; 0);</span>
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        if(negative) cbuf[cidx--] = '-';</span>
+
+<span class="fc" id="L155">        final int result = lastPos - cidx;</span>
+
+<span class="fc" id="L157">        return result;</span>
+    }
+
+    /**
+     * Convert long value to Arabic-decimal sequence.
+     *
+     * &lt;p&gt;Result will be aligned to the last array position.
+     *
+     * @param lVal long value
+     * @param cbuf char buffer array output
+     * @return stored digits sequence (and sign) length
+     * @throws IndexOutOfBoundsException too small array
+     * @see java.lang.Long#toString(long)
+     */
+    public static int long2Arabic(final long lVal, final char[] cbuf)
+            throws IndexOutOfBoundsException{
+<span class="fc" id="L173">        int lastPos = cbuf.length - 1;</span>
+<span class="fc" id="L174">        return long2Arabic(lVal, cbuf, lastPos);</span>
+    }
+
+    /**
+     * Convert long value to Arabic-decimal sequence.
+     *
+     * &lt;p&gt;Result will be aligned to the specified tail position.
+     *
+     * @param lVal long value
+     * @param cbuf char buffer array output
+     * @param lastPos index of tail position in array
+     * @return stored digits sequence (and sign) length
+     * @throws IndexOutOfBoundsException invalid position
+     * @see java.lang.Long#toString(long)
+     */
+    public static int long2Arabic(
+            final long lVal,
+            final char[] cbuf,
+            final int lastPos
+    )
+            throws IndexOutOfBoundsException{
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        if(lVal == Long.MIN_VALUE){</span>
+<span class="fc" id="L196">            return cramLongMin(cbuf, lastPos);</span>
+        }
+
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        final boolean negative = lVal &lt; 0L;</span>
+<span class="fc" id="L200">        int cidx = lastPos;</span>
+        long absVal64;
+        long div64;
+
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        if(negative){</span>
+<span class="fc" id="L205">            absVal64 = -lVal;</span>
+        }else{
+<span class="fc" id="L207">            absVal64 =  lVal;</span>
+        }
+
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        while(absVal64 &gt; Integer.MAX_VALUE){</span>
+<span class="fc" id="L211">            div64         =       absVal64 / CHUNKUNIT;</span>
+<span class="fc" id="L212">            final int mod = (int)(absVal64 % CHUNKUNIT);</span>
+<span class="fc" id="L213">            absVal64 = div64;</span>
+
+<span class="fc" id="L215">            cbuf[cidx--] = HECT0[mod];</span>
+<span class="fc" id="L216">            cbuf[cidx--] = HECT1[mod];</span>
+<span class="fc" id="L217">        }</span>
+
+<span class="fc" id="L219">        int absVal32 = (int) absVal64;</span>
+        int div32;
+
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        while(absVal32 &gt;= CHUNKLIMIT){</span>
+<span class="fc" id="L223">            div32         = absVal32 / CHUNKUNIT;</span>
+<span class="fc" id="L224">            final int mod = absVal32 % CHUNKUNIT;</span>
+<span class="fc" id="L225">            absVal32 = div32;</span>
+
+<span class="fc" id="L227">            cbuf[cidx--] = HECT0[mod];</span>
+<span class="fc" id="L228">            cbuf[cidx--] = HECT1[mod];</span>
+<span class="fc" id="L229">        }</span>
+
+        do{
+<span class="fc" id="L232">            div32 = (absVal32 * DIV10NUME) &gt;&gt;&gt; DIV10SFT;</span>
+            //  div32 = abs32 * 52429 / 524288
+            //        = floor(abs32 * 0.1000003814697265625);
+            //        = abs32 / 10;
+
+<span class="fc" id="L237">            final int mod = absVal32 % DECA;</span>
+<span class="fc" id="L238">            absVal32 = div32;</span>
+
+<span class="fc" id="L240">            cbuf[cidx--] = (char)(mod | ARABICUC_MASK);</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        }while(div32 &gt; 0);</span>
+
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if(negative) cbuf[cidx--] = '-';</span>
+
+<span class="fc" id="L245">        final int result = lastPos - cidx;</span>
+
+<span class="fc" id="L247">        return result;</span>
+    }
+
+    /**
+     * Store int minimum value.
+     * @param cbuf char buffer
+     * @param lastPos index of tail position
+     * @return digits (and sign) length
+     * @throws IndexOutOfBoundsException invalid position
+     * @see java.lang.Integer#MIN_VALUE
+     */
+    private static int cramIntMin(final char[] cbuf, final int lastPos)
+            throws IndexOutOfBoundsException{
+<span class="fc" id="L260">        final int startPos = lastPos - (MINLEN_INT - 1);</span>
+<span class="fc" id="L261">        MINTXT_INT.getChars(0, MINLEN_INT, cbuf, startPos);</span>
+<span class="fc" id="L262">        return MINLEN_INT;</span>
+    }
+
+    /**
+     * Store long minimum value.
+     * @param cbuf char buffer
+     * @param lastPos index of tail position
+     * @return digits (and sign) length
+     * @throws IndexOutOfBoundsException invalid position
+     * @see java.lang.Long#MIN_VALUE
+     */
+    private static int cramLongMin(final char[] cbuf, final int lastPos)
+            throws IndexOutOfBoundsException{
+<span class="fc" id="L275">        final int startPos = lastPos - (MINLEN_LONG - 1);</span>
+<span class="fc" id="L276">        MINTXT_LONG.getChars(0, MINLEN_LONG, cbuf, startPos);</span>
+<span class="fc" id="L277">        return MINLEN_LONG;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

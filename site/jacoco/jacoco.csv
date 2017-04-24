@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+JarabraDix,io.github.olyutorskii.jarabradix,ArabicEncoder,31,324,13,39,3,76,13,21,1,7
+JarabraDix,io.github.olyutorskii.jarabradix,DecimalWriter,10,64,0,0,0,17,0,4,0,4
+JarabraDix,io.github.olyutorskii.jarabradix,DecimalSequence,0,177,0,6,0,42,0,17,0,14

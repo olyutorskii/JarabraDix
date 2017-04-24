@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DecimalSequence.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JarabraDix</a> &gt; <a href="index.source.html" class="el_package">io.github.olyutorskii.jarabradix</a> &gt; <span class="el_source">DecimalSequence.java</span></div><h1>DecimalSequence.java</h1><pre class="source lang-java linenums">/*
+ * License : The MIT License
+ * Copyright(c) 2017 olyutorskii
+ */
+
+package io.github.olyutorskii.jarabradix;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.BufferOverflowException;
+import java.nio.CharBuffer;
+import java.nio.ReadOnlyBufferException;
+
+/**
+ * Decimal character sequence.
+ *
+ * &lt;p&gt;Arabic digit characters holder. (with leading minus-sign if negative)
+ *
+ * &lt;p&gt;int and long value input supported.
+ *
+ * @see java.lang.Integer#toString(int)
+ * @see java.lang.Long#toString(long)
+ */
+public class DecimalSequence implements CharSequence{
+
+    private static final int CBUFLEN = 20;
+    private static final int LASTPOS = CBUFLEN - 1;
+
+
+    static{
+        assert CBUFLEN == ArabicEncoder.MINLEN_LONG;
+<span class="fc" id="L32">    }</span>
+
+
+    // tail aligned buffer
+    private final char[] cbuf;
+
+    private int span;
+    private int headPos;
+
+
+    /**
+     * Constructor.
+     *
+     * &lt;p&gt;Initial value is &amp;quot;0&amp;quot; (Zero)
+     */
+    public DecimalSequence(){
+<span class="fc" id="L48">        super();</span>
+<span class="fc" id="L49">        this.cbuf = new char[CBUFLEN];</span>
+<span class="fc" id="L50">        initZero();</span>
+<span class="fc" id="L51">        return;</span>
+    }
+
+
+    /**
+     * init to zero.
+     */
+    private void initZero(){
+<span class="fc" id="L59">        this.cbuf[LASTPOS] = '0';</span>
+<span class="fc" id="L60">        this.headPos = LASTPOS;</span>
+<span class="fc" id="L61">        this.span = 1;</span>
+<span class="fc" id="L62">        return;</span>
+    }
+
+    /**
+     * Update decimal sequence by int value.
+     *
+     * @param iVal int value
+     * @return decimal sequence length
+     * @see java.lang.Integer#toString(int)
+     */
+    public int update(int iVal){
+<span class="fc" id="L73">        int len = ArabicEncoder.int2Arabic(iVal, this.cbuf, LASTPOS);</span>
+<span class="fc" id="L74">        this.span = len;</span>
+<span class="fc" id="L75">        this.headPos = CBUFLEN - len;</span>
+<span class="fc" id="L76">        return len;</span>
+    }
+
+    /**
+     * Update decimal sequence by long value.
+     *
+     * @param lVal long value
+     * @return decimal sequence length
+     * @see java.lang.Long#toString(long)
+     */
+    public int update(long lVal){
+<span class="fc" id="L87">        int len = ArabicEncoder.long2Arabic(lVal, this.cbuf, LASTPOS);</span>
+<span class="fc" id="L88">        this.span = len;</span>
+<span class="fc" id="L89">        this.headPos = CBUFLEN - len;</span>
+<span class="fc" id="L90">        return len;</span>
+    }
+
+    /**
+     * Write digits to CharBuffer.
+     *
+     * @param nioCbuf output
+     * @return digits length
+     * @throws BufferOverflowException
+     * If buffer's current position is not smaller than its limit
+     * @throws ReadOnlyBufferException
+     * If buffer is read-only
+     */
+    public int flushDigitTo(CharBuffer nioCbuf)
+            throws BufferOverflowException,
+                   ReadOnlyBufferException {
+<span class="fc" id="L106">        nioCbuf.put(this.cbuf, this.headPos, this.span);</span>
+<span class="fc" id="L107">        return this.span;</span>
+    }
+
+    /**
+     * Write digits to StringBuilder.
+     *
+     * @param buf output
+     * @return digits length
+     */
+    public int flushDigitTo(StringBuilder buf){
+<span class="fc" id="L117">        buf.append(this.cbuf, this.headPos, this.span);</span>
+<span class="fc" id="L118">        return this.span;</span>
+    }
+
+    /**
+     * Write digits to StringBuffer.
+     *
+     * @param buf output
+     * @return digits length
+     */
+    public int flushDigitTo(StringBuffer buf){
+<span class="fc" id="L128">        buf.append(this.cbuf, this.headPos, this.span);</span>
+<span class="fc" id="L129">        return this.span;</span>
+    }
+
+    /**
+     * Write digits to Writer.
+     *
+     * @param writer output
+     * @return digits length
+     * @throws IOException If an I/O error occurs
+     */
+    public int flushDigitTo(Writer writer)
+            throws IOException{
+<span class="fc" id="L141">        writer.write(this.cbuf, this.headPos, this.span);</span>
+<span class="fc" id="L142">        return this.span;</span>
+    }
+
+    /**
+     * Write digits to Appendable.
+     *
+     * @param app output
+     * @return digits length
+     * @throws IOException If an I/O error occurs
+     */
+    public int flushDigitTo(Appendable app)
+            throws IOException{
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        for(int idx = this.headPos; idx &lt;= LASTPOS; idx++){</span>
+<span class="fc" id="L155">            char decimalCh = this.cbuf[idx];</span>
+<span class="fc" id="L156">            app.append(decimalCh);</span>
+        }
+
+<span class="fc" id="L159">        return this.span;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int length(){
+<span class="fc" id="L168">        return this.span;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param index {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
+     */
+    @Override
+    public char charAt(int index)
+            throws IndexOutOfBoundsException{
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if(index &lt; 0){</span>
+<span class="fc" id="L181">            throw new IndexOutOfBoundsException();</span>
+        }
+
+<span class="fc" id="L184">        char result = this.cbuf[this.headPos + index];</span>
+<span class="fc" id="L185">        return result;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param start {@inheritDoc}
+     * @param end {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
+     */
+    @Override
+    public CharSequence subSequence(int start, int end)
+            throws IndexOutOfBoundsException{
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if(start &lt; 0){</span>
+<span class="fc" id="L199">            throw new IndexOutOfBoundsException();</span>
+        }
+
+<span class="fc" id="L202">        int offset = this.headPos + start;</span>
+<span class="fc" id="L203">        int len = end - start;</span>
+
+<span class="fc" id="L205">        String result = new String(this.cbuf, offset, len);</span>
+
+<span class="fc" id="L207">        return result;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Override
+    public String toString(){
+<span class="fc" id="L216">        String result = new String(this.cbuf, this.headPos, this.span);</span>
+<span class="fc" id="L217">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
