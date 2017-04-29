@@ -12,6 +12,11 @@ package io.github.olyutorskii.jarabradix;
  * but, GC-friendly.
  *
  * <p>char buffer grows towards a younger index.
+ *
+ * @see <a target="_blank"
+ * href="https://en.wikipedia.org/wiki/Division_algorithm#Division_by_a_constant">
+ * Division by a constant (Wikipedia)
+ * </a>
  */
 public final class ArabicEncoder {
 
@@ -248,7 +253,8 @@ public final class ArabicEncoder {
     }
 
     /**
-     * Store int minimum value.
+     * Store int minimum digits to char array.
+     *
      * @param cbuf char buffer
      * @param lastPos index of tail position
      * @return digits (and sign) length
@@ -263,7 +269,8 @@ public final class ArabicEncoder {
     }
 
     /**
-     * Store long minimum value.
+     * Store long minimum digits to char array.
+     *
      * @param cbuf char buffer
      * @param lastPos index of tail position
      * @return digits (and sign) length
