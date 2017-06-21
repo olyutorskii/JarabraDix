@@ -16,7 +16,7 @@
     <groupId>io.github.olyutorskii</groupId>
     <artifactId>jarabradix</artifactId>
 
-    <version>1.101.4</version>
+    <version>1.101.5-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <name>JarabraDix</name>
