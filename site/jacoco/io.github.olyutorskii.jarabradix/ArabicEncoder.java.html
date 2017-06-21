@@ -12,8 +12,13 @@ package io.github.olyutorskii.jarabradix;
  * but, GC-friendly.
  *
  * &lt;p&gt;char buffer grows towards a younger index.
+ *
+ * @see &lt;a target=&quot;_blank&quot;
+ * href=&quot;https://en.wikipedia.org/wiki/Division_algorithm#Division_by_a_constant&quot;&gt;
+ * Division by a constant (Wikipedia)
+ * &lt;/a&gt;
  */
-<span class="pc bpc" id="L16" title="1 of 2 branches missed.">public final class ArabicEncoder {</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">public final class ArabicEncoder {</span>
 
     /** Required char-array length to convert any int value. */
     public static final int MINLEN_INT  = 11;
@@ -40,18 +45,18 @@ package io.github.olyutorskii.jarabradix;
 
 
     static{
-<span class="pc bpc" id="L43" title="2 of 4 branches missed.">        assert MINTXT_INT .equals(Integer.toString(Integer.MIN_VALUE));</span>
-<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        assert MINTXT_LONG.equals(Long   .toString(Long   .MIN_VALUE));</span>
-<span class="pc bpc" id="L45" title="2 of 4 branches missed.">        assert MINLEN_INT  == MINTXT_INT .length();</span>
-<span class="pc bpc" id="L46" title="2 of 4 branches missed.">        assert MINLEN_LONG == MINTXT_LONG.length();</span>
+<span class="pc bpc" id="L48" title="2 of 4 branches missed.">        assert MINTXT_INT .equals(Integer.toString(Integer.MIN_VALUE));</span>
+<span class="pc bpc" id="L49" title="2 of 4 branches missed.">        assert MINTXT_LONG.equals(Long   .toString(Long   .MIN_VALUE));</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        assert MINLEN_INT  == MINTXT_INT .length();</span>
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">        assert MINLEN_LONG == MINTXT_LONG.length();</span>
 
-<span class="fc" id="L48">        HECT1 = new char[CHUNKUNIT];</span>
-<span class="fc" id="L49">        HECT0 = new char[CHUNKUNIT];</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        for(int idx = 0; idx &lt; CHUNKUNIT; idx++){</span>
-<span class="fc" id="L51">            final int h1 = idx / DECA;</span>
-<span class="fc" id="L52">            final int h0 = idx % DECA;</span>
-<span class="fc" id="L53">            HECT1[idx] = Character.forDigit(h1, DECA);</span>
-<span class="fc" id="L54">            HECT0[idx] = Character.forDigit(h0, DECA);</span>
+<span class="fc" id="L53">        HECT1 = new char[CHUNKUNIT];</span>
+<span class="fc" id="L54">        HECT0 = new char[CHUNKUNIT];</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for(int idx = 0; idx &lt; CHUNKUNIT; idx++){</span>
+<span class="fc" id="L56">            final int h1 = idx / DECA;</span>
+<span class="fc" id="L57">            final int h0 = idx % DECA;</span>
+<span class="fc" id="L58">            HECT1[idx] = Character.forDigit(h1, DECA);</span>
+<span class="fc" id="L59">            HECT0[idx] = Character.forDigit(h0, DECA);</span>
         }
     }
 
@@ -67,16 +72,16 @@ package io.github.olyutorskii.jarabradix;
         assert ((CHUNKLIMIT - 1) * DIV10NUME) &gt;&gt;&gt; DIV10SFT
             ==  (CHUNKLIMIT - 1) / DECA;
 
-<span class="pc bpc" id="L70" title="2 of 4 branches missed.">        assert Character.forDigit(9, DECA) == (ARABICUC_MASK | 9);</span>
-<span class="fc" id="L71">    }</span>
+<span class="pc bpc" id="L75" title="2 of 4 branches missed.">        assert Character.forDigit(9, DECA) == (ARABICUC_MASK | 9);</span>
+<span class="fc" id="L76">    }</span>
 
 
     /**
      * Hidden constructor.
      */
-<span class="nc" id="L77">    private ArabicEncoder(){</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">        assert false;</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L82">    private ArabicEncoder(){</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        assert false;</span>
+<span class="nc" id="L84">    }</span>
 
 
     /**
@@ -92,8 +97,8 @@ package io.github.olyutorskii.jarabradix;
      */
     public static int int2Arabic(final int iVal, final char[] cbuf)
             throws IndexOutOfBoundsException{
-<span class="fc" id="L95">        int lastPos = cbuf.length - 1;</span>
-<span class="fc" id="L96">        return int2Arabic(iVal, cbuf, lastPos);</span>
+<span class="fc" id="L100">        int lastPos = cbuf.length - 1;</span>
+<span class="fc" id="L101">        return int2Arabic(iVal, cbuf, lastPos);</span>
     }
 
     /**
@@ -114,47 +119,47 @@ package io.github.olyutorskii.jarabradix;
             final int lastPos
     )
             throws IndexOutOfBoundsException{
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        if(iVal == Integer.MIN_VALUE){</span>
-<span class="fc" id="L118">            return cramIntMin(cbuf, lastPos);</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if(iVal == Integer.MIN_VALUE){</span>
+<span class="fc" id="L123">            return cramIntMin(cbuf, lastPos);</span>
         }
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">        final boolean negative = iVal &lt; 0;</span>
-<span class="fc" id="L122">        int cidx = lastPos;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        final boolean negative = iVal &lt; 0;</span>
+<span class="fc" id="L127">        int cidx = lastPos;</span>
         int absVal32;
         int div32;
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">        if(negative){</span>
-<span class="fc" id="L127">            absVal32 = -iVal;</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if(negative){</span>
+<span class="fc" id="L132">            absVal32 = -iVal;</span>
         }else{
-<span class="fc" id="L129">            absVal32 =  iVal;</span>
+<span class="fc" id="L134">            absVal32 =  iVal;</span>
         }
 
-<span class="fc bfc" id="L132" title="All 2 branches covered.">        while(absVal32 &gt;= CHUNKLIMIT){</span>
-<span class="fc" id="L133">            div32         = absVal32 / CHUNKUNIT;</span>
-<span class="fc" id="L134">            final int mod = absVal32 % CHUNKUNIT;</span>
-<span class="fc" id="L135">            absVal32 = div32;</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        while(absVal32 &gt;= CHUNKLIMIT){</span>
+<span class="fc" id="L138">            div32         = absVal32 / CHUNKUNIT;</span>
+<span class="fc" id="L139">            final int mod = absVal32 % CHUNKUNIT;</span>
+<span class="fc" id="L140">            absVal32 = div32;</span>
 
-<span class="fc" id="L137">            cbuf[cidx--] = HECT0[mod];</span>
-<span class="fc" id="L138">            cbuf[cidx--] = HECT1[mod];</span>
-<span class="fc" id="L139">        }</span>
+<span class="fc" id="L142">            cbuf[cidx--] = HECT0[mod];</span>
+<span class="fc" id="L143">            cbuf[cidx--] = HECT1[mod];</span>
+<span class="fc" id="L144">        }</span>
 
         do{
-<span class="fc" id="L142">            div32 = (absVal32 * DIV10NUME) &gt;&gt;&gt; DIV10SFT;</span>
+<span class="fc" id="L147">            div32 = (absVal32 * DIV10NUME) &gt;&gt;&gt; DIV10SFT;</span>
             //  div32 = abs32 * 52429 / 524288
             //        = floor(abs32 * 0.1000003814697265625);
             //        = abs32 / 10;
 
-<span class="fc" id="L147">            final int mod = absVal32 % DECA;</span>
-<span class="fc" id="L148">            absVal32 = div32;</span>
+<span class="fc" id="L152">            final int mod = absVal32 % DECA;</span>
+<span class="fc" id="L153">            absVal32 = div32;</span>
 
-<span class="fc" id="L150">            cbuf[cidx--] = (char)(mod | ARABICUC_MASK);</span>
-<span class="fc bfc" id="L151" title="All 2 branches covered.">        }while(div32 &gt; 0);</span>
+<span class="fc" id="L155">            cbuf[cidx--] = (char)(mod | ARABICUC_MASK);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        }while(div32 &gt; 0);</span>
 
-<span class="fc bfc" id="L153" title="All 2 branches covered.">        if(negative) cbuf[cidx--] = '-';</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if(negative) cbuf[cidx--] = '-';</span>
 
-<span class="fc" id="L155">        final int result = lastPos - cidx;</span>
+<span class="fc" id="L160">        final int result = lastPos - cidx;</span>
 
-<span class="fc" id="L157">        return result;</span>
+<span class="fc" id="L162">        return result;</span>
     }
 
     /**
@@ -170,8 +175,8 @@ package io.github.olyutorskii.jarabradix;
      */
     public static int long2Arabic(final long lVal, final char[] cbuf)
             throws IndexOutOfBoundsException{
-<span class="fc" id="L173">        int lastPos = cbuf.length - 1;</span>
-<span class="fc" id="L174">        return long2Arabic(lVal, cbuf, lastPos);</span>
+<span class="fc" id="L178">        int lastPos = cbuf.length - 1;</span>
+<span class="fc" id="L179">        return long2Arabic(lVal, cbuf, lastPos);</span>
     }
 
     /**
@@ -192,63 +197,64 @@ package io.github.olyutorskii.jarabradix;
             final int lastPos
     )
             throws IndexOutOfBoundsException{
-<span class="fc bfc" id="L195" title="All 2 branches covered.">        if(lVal == Long.MIN_VALUE){</span>
-<span class="fc" id="L196">            return cramLongMin(cbuf, lastPos);</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        if(lVal == Long.MIN_VALUE){</span>
+<span class="fc" id="L201">            return cramLongMin(cbuf, lastPos);</span>
         }
 
-<span class="fc bfc" id="L199" title="All 2 branches covered.">        final boolean negative = lVal &lt; 0L;</span>
-<span class="fc" id="L200">        int cidx = lastPos;</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        final boolean negative = lVal &lt; 0L;</span>
+<span class="fc" id="L205">        int cidx = lastPos;</span>
         long absVal64;
         long div64;
 
-<span class="fc bfc" id="L204" title="All 2 branches covered.">        if(negative){</span>
-<span class="fc" id="L205">            absVal64 = -lVal;</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        if(negative){</span>
+<span class="fc" id="L210">            absVal64 = -lVal;</span>
         }else{
-<span class="fc" id="L207">            absVal64 =  lVal;</span>
+<span class="fc" id="L212">            absVal64 =  lVal;</span>
         }
 
-<span class="fc bfc" id="L210" title="All 2 branches covered.">        while(absVal64 &gt; Integer.MAX_VALUE){</span>
-<span class="fc" id="L211">            div64         =       absVal64 / CHUNKUNIT;</span>
-<span class="fc" id="L212">            final int mod = (int)(absVal64 % CHUNKUNIT);</span>
-<span class="fc" id="L213">            absVal64 = div64;</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        while(absVal64 &gt; Integer.MAX_VALUE){</span>
+<span class="fc" id="L216">            div64         =       absVal64 / CHUNKUNIT;</span>
+<span class="fc" id="L217">            final int mod = (int)(absVal64 % CHUNKUNIT);</span>
+<span class="fc" id="L218">            absVal64 = div64;</span>
 
-<span class="fc" id="L215">            cbuf[cidx--] = HECT0[mod];</span>
-<span class="fc" id="L216">            cbuf[cidx--] = HECT1[mod];</span>
-<span class="fc" id="L217">        }</span>
+<span class="fc" id="L220">            cbuf[cidx--] = HECT0[mod];</span>
+<span class="fc" id="L221">            cbuf[cidx--] = HECT1[mod];</span>
+<span class="fc" id="L222">        }</span>
 
-<span class="fc" id="L219">        int absVal32 = (int) absVal64;</span>
+<span class="fc" id="L224">        int absVal32 = (int) absVal64;</span>
         int div32;
 
-<span class="fc bfc" id="L222" title="All 2 branches covered.">        while(absVal32 &gt;= CHUNKLIMIT){</span>
-<span class="fc" id="L223">            div32         = absVal32 / CHUNKUNIT;</span>
-<span class="fc" id="L224">            final int mod = absVal32 % CHUNKUNIT;</span>
-<span class="fc" id="L225">            absVal32 = div32;</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        while(absVal32 &gt;= CHUNKLIMIT){</span>
+<span class="fc" id="L228">            div32         = absVal32 / CHUNKUNIT;</span>
+<span class="fc" id="L229">            final int mod = absVal32 % CHUNKUNIT;</span>
+<span class="fc" id="L230">            absVal32 = div32;</span>
 
-<span class="fc" id="L227">            cbuf[cidx--] = HECT0[mod];</span>
-<span class="fc" id="L228">            cbuf[cidx--] = HECT1[mod];</span>
-<span class="fc" id="L229">        }</span>
+<span class="fc" id="L232">            cbuf[cidx--] = HECT0[mod];</span>
+<span class="fc" id="L233">            cbuf[cidx--] = HECT1[mod];</span>
+<span class="fc" id="L234">        }</span>
 
         do{
-<span class="fc" id="L232">            div32 = (absVal32 * DIV10NUME) &gt;&gt;&gt; DIV10SFT;</span>
+<span class="fc" id="L237">            div32 = (absVal32 * DIV10NUME) &gt;&gt;&gt; DIV10SFT;</span>
             //  div32 = abs32 * 52429 / 524288
             //        = floor(abs32 * 0.1000003814697265625);
             //        = abs32 / 10;
 
-<span class="fc" id="L237">            final int mod = absVal32 % DECA;</span>
-<span class="fc" id="L238">            absVal32 = div32;</span>
+<span class="fc" id="L242">            final int mod = absVal32 % DECA;</span>
+<span class="fc" id="L243">            absVal32 = div32;</span>
 
-<span class="fc" id="L240">            cbuf[cidx--] = (char)(mod | ARABICUC_MASK);</span>
-<span class="fc bfc" id="L241" title="All 2 branches covered.">        }while(div32 &gt; 0);</span>
+<span class="fc" id="L245">            cbuf[cidx--] = (char)(mod | ARABICUC_MASK);</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        }while(div32 &gt; 0);</span>
 
-<span class="fc bfc" id="L243" title="All 2 branches covered.">        if(negative) cbuf[cidx--] = '-';</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">        if(negative) cbuf[cidx--] = '-';</span>
 
-<span class="fc" id="L245">        final int result = lastPos - cidx;</span>
+<span class="fc" id="L250">        final int result = lastPos - cidx;</span>
 
-<span class="fc" id="L247">        return result;</span>
+<span class="fc" id="L252">        return result;</span>
     }
 
     /**
-     * Store int minimum value.
+     * Store int minimum digits to char array.
+     *
      * @param cbuf char buffer
      * @param lastPos index of tail position
      * @return digits (and sign) length
@@ -257,13 +263,14 @@ package io.github.olyutorskii.jarabradix;
      */
     private static int cramIntMin(final char[] cbuf, final int lastPos)
             throws IndexOutOfBoundsException{
-<span class="fc" id="L260">        final int startPos = lastPos - (MINLEN_INT - 1);</span>
-<span class="fc" id="L261">        MINTXT_INT.getChars(0, MINLEN_INT, cbuf, startPos);</span>
-<span class="fc" id="L262">        return MINLEN_INT;</span>
+<span class="fc" id="L266">        final int startPos = lastPos - (MINLEN_INT - 1);</span>
+<span class="fc" id="L267">        MINTXT_INT.getChars(0, MINLEN_INT, cbuf, startPos);</span>
+<span class="fc" id="L268">        return MINLEN_INT;</span>
     }
 
     /**
-     * Store long minimum value.
+     * Store long minimum digits to char array.
+     *
      * @param cbuf char buffer
      * @param lastPos index of tail position
      * @return digits (and sign) length
@@ -272,9 +279,9 @@ package io.github.olyutorskii.jarabradix;
      */
     private static int cramLongMin(final char[] cbuf, final int lastPos)
             throws IndexOutOfBoundsException{
-<span class="fc" id="L275">        final int startPos = lastPos - (MINLEN_LONG - 1);</span>
-<span class="fc" id="L276">        MINTXT_LONG.getChars(0, MINLEN_LONG, cbuf, startPos);</span>
-<span class="fc" id="L277">        return MINLEN_LONG;</span>
+<span class="fc" id="L282">        final int startPos = lastPos - (MINLEN_LONG - 1);</span>
+<span class="fc" id="L283">        MINTXT_LONG.getChars(0, MINLEN_LONG, cbuf, startPos);</span>
+<span class="fc" id="L284">        return MINLEN_LONG;</span>
     }
 
 }
