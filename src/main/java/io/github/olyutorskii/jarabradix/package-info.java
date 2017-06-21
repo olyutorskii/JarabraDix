@@ -8,7 +8,7 @@
  *
  * <p>It's similar to {@link java.lang.Integer#toString(int)}
  * and {@link java.io.PrintWriter#print(int)}.
- * But, ther is no String constructor happen.
+ * But, there is no String constructor.
  * It's mean, GC-friendly.
  */
 

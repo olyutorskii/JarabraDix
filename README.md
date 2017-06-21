@@ -1,7 +1,6 @@
 # JarabraDix #
 
-[![Build Status](https://travis-ci.org/olyutorskii/JarabraDix.svg?branch=master)]
-(https://travis-ci.org/olyutorskii/JarabraDix)
+[![Build Status](https://travis-ci.org/olyutorskii/JarabraDix.svg?branch=master)](https://travis-ci.org/olyutorskii/JarabraDix)
 
 -----------------------------------------------------------------------
 
@@ -18,7 +17,7 @@ We decided to separate GC-friendry-API idea
 from DoubDabC implementation.
 
 
-## DoubDabC implementation ##
+## JarabraDix implementation ##
 
 * There is no String constructor during conversion.
 That means, **GC-friendry !**
@@ -42,6 +41,15 @@ as Arabic numeral characters\(0-9\) sequence output.
 * Extended `Writer` class is provided
 which supports `print(int)` & `print(long)` methods
 like `PrintWriter`.
+
+
+## What is the difference with [**DoubDabC**][DDC] ? ##
+
+* If you use huge binary integer value that does not fit in long,
+use **DoubDabC**.
+
+* If you have an extremely slow JVM(and CPU) for integer division,
+let's try **DoubDabC**.
 
 
 ## How to build ##

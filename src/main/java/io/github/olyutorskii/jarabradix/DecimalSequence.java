@@ -12,7 +12,7 @@ import java.nio.CharBuffer;
 import java.nio.ReadOnlyBufferException;
 
 /**
- * Decimal character sequence.
+ * Decimal character sequence with {@link java.lang.CharSequence} API.
  *
  * <p>Arabic digit characters holder. (with leading minus-sign if negative)
  *
@@ -42,7 +42,7 @@ public class DecimalSequence implements CharSequence{
     /**
      * Constructor.
      *
-     * <p>Initial value is &quot;0&quot; (Zero)
+     * <p>Initial digit sequence is &quot;0&quot; (Zero)
      */
     public DecimalSequence(){
         super();
