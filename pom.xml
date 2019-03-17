@@ -94,6 +94,7 @@
         <!-- Walk around: JDK 11 javadoc + Maven -->
         <detectJavaApiLink>false</detectJavaApiLink>
 
+        <surefire-plugin.version>3.0.0-M3</surefire-plugin.version>
         <jacoco-plugin.version>0.8.3</jacoco-plugin.version>
 
         <checkstyle-plugin.version>3.0.0</checkstyle-plugin.version>
@@ -105,7 +106,7 @@
         <pmd-plugin.version>3.11.0</pmd-plugin.version>
         <pmd.analysisCache>true</pmd.analysisCache>
 
-        <findbugs-plugin.version>3.0.4</findbugs-plugin.version>
+        <findbugs-plugin.version>3.0.5</findbugs-plugin.version>
         <findbugs.effort>Max</findbugs.effort>
         <findbugs.threshold>Low</findbugs.threshold>
         <!-- for Jenkins -->
@@ -160,7 +161,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <configuration>
                     <filesets>
                         <fileset>
@@ -187,29 +188,37 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.4.1</version>
-                <configuration>
-                    <rules>
-                        <requireMavenVersion>
-                            <version>[3.0.1,)</version>
-                        </requireMavenVersion>
-                        <requireJavaVersion>
-                            <version>[1.7,)</version>
-                        </requireJavaVersion>
-                    </rules>
-                </configuration>
+                <version>3.0.0-M2</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.3.9,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>[1.8,)</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.0</version>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>1.7</source>  <!-- for NetBeans IDE -->
                     <target>1.7</target>
@@ -224,7 +233,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.20</version>
+                <version>${surefire-plugin.version}</version>
                 <configuration>
                     <enableAssertions>true</enableAssertions>
                 </configuration>
@@ -261,7 +270,7 @@
                                         <limit implementation="org.jacoco.report.check.Limit">
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.60</minimum>
+                                            <minimum>0.0</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -274,7 +283,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.1</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -315,13 +324,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
-                <version>2.5.2</version>
+                <version>3.0.0-M1</version>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
+                <version>3.0.0-M1</version>
             </plugin>
 
 
@@ -330,7 +339,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.6</version>
+                <version>3.7.1</version>
                 <configuration>
                     <locales>${site.locales}</locales>
                 </configuration>
@@ -342,7 +351,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <descriptors>
                         <descriptor>src/assembly/src.xml</descriptor>
@@ -381,7 +390,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.0.0</version>
                 <configuration>
                     <linkOnly>true</linkOnly>
                     <offline>true</offline>
@@ -391,20 +400,20 @@
                         <reports>
                             <report>index</report>
                             <report>summary</report>
-                            <report>license</report>
+                            <report>licenses</report>
                             <report>dependency-info</report>
                             <report>dependencies</report>
                             <report>dependency-convergence</report>
                             <report>plugins</report>
                             <report>plugin-management</report>
-                            <report>project-team</report>
-                            <report>issue-tracking</report>
+                            <report>team</report>
+                            <report>issue-management</report>
                             <report>scm</report>
 <!--
                             <report>dependency-management</report>
                             <report>distribution-management</report>
-                            <report>cim</report>
-                            <report>mailing-list</report>
+                            <report>ci-management</report>
+                            <report>mailing-lists</report>
                             <report>modules</report>
 -->
                         </reports>
@@ -415,15 +424,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.4</version>
+                <version>3.1.0</version>
                 <configuration>
                     <author>false</author>
                     <notimestamp>true</notimestamp>
                     <quiet>true</quiet>
                     <show>protected</show>
-                    <locale>${javadoc.locale}</locale>
                     <header>${project.name} ${project.version} API</header>
                     <version>true</version>
+                    <locale>${javadoc.locale}</locale>
+                    <!-- for JDK11 javadoc -->
+                    <additionalJOption>-J-Duser.language=${javadoc.locale}</additionalJOption>
                 </configuration>
                 <reportSets>
                     <reportSet>
@@ -437,13 +448,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.5</version>
+                <version>3.0.0</version>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.20</version>
+                <version>${surefire-plugin.version}</version>
             </plugin>
 
             <plugin>
