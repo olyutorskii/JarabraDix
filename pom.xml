@@ -91,7 +91,10 @@
         <javadoc.locale>en</javadoc.locale>
         <findbugs.jvmArgs>-Duser.language=en</findbugs.jvmArgs>
 
-        <jacoco-plugin.version>0.7.9</jacoco-plugin.version>
+        <!-- Walk around: JDK 11 javadoc + Maven -->
+        <detectJavaApiLink>false</detectJavaApiLink>
+
+        <jacoco-plugin.version>0.8.3</jacoco-plugin.version>
 
         <checkstyle-plugin.version>2.17</checkstyle-plugin.version>
         <checkstyleruntime.version>6.19</checkstyleruntime.version>
@@ -99,7 +102,8 @@
         <checkstyle.suppressions.location>${project.basedir}/checkstyle-suppressions.xml</checkstyle.suppressions.location>
         <checkstyle.enable.rss>false</checkstyle.enable.rss>
 
-        <pmd-plugin.version>3.8</pmd-plugin.version>
+        <pmd-plugin.version>3.11.0</pmd-plugin.version>
+        <pmd.analysisCache>true</pmd.analysisCache>
 
         <findbugs-plugin.version>3.0.4</findbugs-plugin.version>
         <findbugs.effort>Max</findbugs.effort>
@@ -353,6 +357,17 @@
                 <version>${checkstyle-plugin.version}</version>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${pmd-plugin.version}</version>
+                <configuration>
+                    <rulesets>
+                        <ruleset>${project.basedir}/config/pmd/pmdrules.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+
         </plugins>
 
         <resources>
@@ -464,7 +479,7 @@
                 <version>${pmd-plugin.version}</version>
                 <configuration>
                     <rulesets>
-                        <ruleset>${project.basedir}/pmdrules.xml</ruleset>
+                        <ruleset>${project.basedir}/config/pmd/pmdrules.xml</ruleset>
                     </rulesets>
                 </configuration>
                 <reportSets>
