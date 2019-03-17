@@ -4,6 +4,10 @@ JarabraDix Changelog
 ## WIP
 Released on 20XX-XX-XX
 
+## v1.101.5-SNAPSHOT
+Released on 20XX-XX-XX
+- responding to checkstyle security issue CVE-2019-9658
+
 ## v1.101.4
 Released on 2017-06-22
 - correspond to Maven 3.5

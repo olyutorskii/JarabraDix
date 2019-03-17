@@ -16,6 +16,9 @@
 
 <suppressions>
 
+    <!-- Annotations -->
+    <suppress files="" checks="AnnotationOnSameLine" />
+
     <!-- Class Design -->
     <suppress files="" checks="DesignForExtension" />
 
