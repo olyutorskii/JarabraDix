@@ -4,8 +4,8 @@ JarabraDix Changelog
 ## WIP
 Released on 20XX-XX-XX
 
-## v1.101.5-SNAPSHOT
-Released on 20XX-XX-XX
+## v1.101.6
+Released on 2019-03-19
 - responding to checkstyle security issue CVE-2019-9658
 
 ## v1.101.4
