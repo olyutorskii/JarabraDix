@@ -54,8 +54,8 @@ let's try **DoubDabC**.
 
 ## How to build ##
 
-* JarabraDix needs to use [Maven 3.0.1+](https://maven.apache.org/)
-and JDK 1.7+ to be built.
+* JarabraDix needs to use [Maven 3.3.9+](https://maven.apache.org/)
+and JDK 1.8+ to be built.
 
 * JarabraDix runtime does not depend on any other library at all.
 Just compile Java sources under `src/main/java/` if you don't use Maven.
