@@ -7,6 +7,9 @@
   http://maven.apache.org/xsd/assembly-2.0.0.xsd"
 >
 
+<!--
+    for maven-assembly-plugin
+-->
 
     <id>src</id>
 
@@ -31,6 +34,10 @@
         </fileSet>
         <fileSet>
             <directory>${project.basedir}/src</directory>
+            <useDefaultExcludes>true</useDefaultExcludes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/config</directory>
             <useDefaultExcludes>true</useDefaultExcludes>
         </fileSet>
     </fileSets>
