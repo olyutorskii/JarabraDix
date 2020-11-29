@@ -1,6 +1,7 @@
 # JarabraDix #
 
-[![Build Status](https://travis-ci.org/olyutorskii/JarabraDix.svg?branch=master)](https://travis-ci.org/olyutorskii/JarabraDix)
+![Java CI with Maven](https://github.com/olyutorskii/JarabraDix/workflows/Java%20CI%20with%20Maven/badge.svg)
+![CodeQL](https://github.com/olyutorskii/JarabraDix/workflows/CodeQL/badge.svg)
 
 -----------------------------------------------------------------------
 
