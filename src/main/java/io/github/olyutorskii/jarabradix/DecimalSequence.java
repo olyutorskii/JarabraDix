@@ -21,13 +21,13 @@ import java.nio.ReadOnlyBufferException;
  * @see java.lang.Integer#toString(int)
  * @see java.lang.Long#toString(long)
  */
-public class DecimalSequence implements CharSequence{
+public class DecimalSequence implements CharSequence {
 
     private static final int CBUFLEN = 20;
     private static final int LASTPOS = CBUFLEN - 1;
 
 
-    static{
+    static {
         assert CBUFLEN == ArabicEncoder.MINLEN_LONG;
     }
 
@@ -44,7 +44,7 @@ public class DecimalSequence implements CharSequence{
      *
      * <p>Initial digit sequence is &quot;0&quot; (Zero)
      */
-    public DecimalSequence(){
+    public DecimalSequence() {
         super();
         this.cbuf = new char[CBUFLEN];
         initZero();
@@ -55,7 +55,7 @@ public class DecimalSequence implements CharSequence{
     /**
      * init to zero.
      */
-    private void initZero(){
+    private void initZero() {
         this.cbuf[LASTPOS] = '0';
         this.headPos = LASTPOS;
         this.span = 1;
@@ -69,7 +69,7 @@ public class DecimalSequence implements CharSequence{
      * @return decimal sequence length
      * @see java.lang.Integer#toString(int)
      */
-    public int update(int iVal){
+    public int update(int iVal) {
         int len = ArabicEncoder.int2Arabic(iVal, this.cbuf, LASTPOS);
         this.span = len;
         this.headPos = CBUFLEN - len;
@@ -83,7 +83,7 @@ public class DecimalSequence implements CharSequence{
      * @return decimal sequence length
      * @see java.lang.Long#toString(long)
      */
-    public int update(long lVal){
+    public int update(long lVal) {
         int len = ArabicEncoder.long2Arabic(lVal, this.cbuf, LASTPOS);
         this.span = len;
         this.headPos = CBUFLEN - len;
@@ -96,9 +96,9 @@ public class DecimalSequence implements CharSequence{
      * @param nioCbuf output
      * @return digits length
      * @throws BufferOverflowException
-     * If buffer's current position is not smaller than its limit
+     *     If buffer's current position is not smaller than its limit
      * @throws ReadOnlyBufferException
-     * If buffer is read-only
+     *     If buffer is read-only
      */
     public int flushDigitTo(CharBuffer nioCbuf)
             throws BufferOverflowException,
@@ -113,7 +113,7 @@ public class DecimalSequence implements CharSequence{
      * @param buf output
      * @return digits length
      */
-    public int flushDigitTo(StringBuilder buf){
+    public int flushDigitTo(StringBuilder buf) {
         buf.append(this.cbuf, this.headPos, this.span);
         return this.span;
     }
@@ -124,7 +124,7 @@ public class DecimalSequence implements CharSequence{
      * @param buf output
      * @return digits length
      */
-    public int flushDigitTo(StringBuffer buf){
+    public int flushDigitTo(StringBuffer buf) {
         buf.append(this.cbuf, this.headPos, this.span);
         return this.span;
     }
@@ -137,7 +137,7 @@ public class DecimalSequence implements CharSequence{
      * @throws IOException If an I/O error occurs
      */
     public int flushDigitTo(Writer writer)
-            throws IOException{
+            throws IOException {
         writer.write(this.cbuf, this.headPos, this.span);
         return this.span;
     }
@@ -150,8 +150,8 @@ public class DecimalSequence implements CharSequence{
      * @throws IOException If an I/O error occurs
      */
     public int flushDigitTo(Appendable app)
-            throws IOException{
-        for(int idx = this.headPos; idx <= LASTPOS; idx++){
+            throws IOException {
+        for (int idx = this.headPos; idx <= LASTPOS; idx++) {
             char decimalCh = this.cbuf[idx];
             app.append(decimalCh);
         }
@@ -164,7 +164,7 @@ public class DecimalSequence implements CharSequence{
      * @return {@inheritDoc}
      */
     @Override
-    public int length(){
+    public int length() {
         return this.span;
     }
 
@@ -176,8 +176,8 @@ public class DecimalSequence implements CharSequence{
      */
     @Override
     public char charAt(int index)
-            throws IndexOutOfBoundsException{
-        if(index < 0){
+            throws IndexOutOfBoundsException {
+        if (index < 0) {
             throw new IndexOutOfBoundsException();
         }
 
@@ -194,8 +194,8 @@ public class DecimalSequence implements CharSequence{
      */
     @Override
     public CharSequence subSequence(int start, int end)
-            throws IndexOutOfBoundsException{
-        if(start < 0){
+            throws IndexOutOfBoundsException {
+        if (start < 0) {
             throw new IndexOutOfBoundsException();
         }
 
@@ -212,7 +212,7 @@ public class DecimalSequence implements CharSequence{
      * @return {@inheritDoc}
      */
     @Override
-    public String toString(){
+    public String toString() {
         String result = new String(this.cbuf, this.headPos, this.span);
         return result;
     }
