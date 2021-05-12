@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [1.101.10] - 2021-05-13
+
 ### Added
 - Add GitHub Actions (JavaCI and CodeQL).
 
@@ -48,7 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial Release
 
 
-[Unreleased]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.8...HEAD
+[Unreleased]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.10...HEAD
+[1.101.10]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.8...v1.101.10
 [1.101.8]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.6...v1.101.8
 [1.101.6]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.4...v1.101.6
 [1.101.4]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.2...v1.101.4
