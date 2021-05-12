@@ -44,7 +44,7 @@ public final class ArabicEncoder {
     private static final char[] HECT0;
 
 
-    static{
+    static {
         assert MINTXT_INT .equals(Integer.toString(Integer.MIN_VALUE));
         assert MINTXT_LONG.equals(Long   .toString(Long   .MIN_VALUE));
         assert MINLEN_INT  == MINTXT_INT .length();
@@ -52,7 +52,7 @@ public final class ArabicEncoder {
 
         HECT1 = new char[CHUNKUNIT];
         HECT0 = new char[CHUNKUNIT];
-        for(int idx = 0; idx < CHUNKUNIT; idx++){
+        for (int idx = 0; idx < CHUNKUNIT; idx++) {
             final int h1 = idx / DECA;
             final int h0 = idx % DECA;
             HECT1[idx] = Character.forDigit(h1, DECA);
@@ -60,9 +60,9 @@ public final class ArabicEncoder {
         }
     }
 
-    static{
+    static {
         assert CHUNKLIMIT >= CHUNKUNIT / DECA;
-        assert (long)(CHUNKLIMIT - 1) * (long)DIV10NUME <= UINT_MAX;
+        assert (long) (CHUNKLIMIT - 1) * (long) DIV10NUME <= UINT_MAX;
 
         assert DIV10NUME - ((1 << DIV10SFT) / DECA) <= 1;
 
@@ -79,7 +79,7 @@ public final class ArabicEncoder {
     /**
      * Hidden constructor.
      */
-    private ArabicEncoder(){
+    private ArabicEncoder() {
         assert false;
     }
 
@@ -96,7 +96,7 @@ public final class ArabicEncoder {
      * @see java.lang.Integer#toString(int)
      */
     public static int int2Arabic(final int iVal, final char[] cbuf)
-            throws IndexOutOfBoundsException{
+            throws IndexOutOfBoundsException {
         int lastPos = cbuf.length - 1;
         return int2Arabic(iVal, cbuf, lastPos);
     }
@@ -118,8 +118,8 @@ public final class ArabicEncoder {
             final char[] cbuf,
             final int lastPos
     )
-            throws IndexOutOfBoundsException{
-        if(iVal == Integer.MIN_VALUE){
+            throws IndexOutOfBoundsException {
+        if (iVal == Integer.MIN_VALUE) {
             return cramIntMin(cbuf, lastPos);
         }
 
@@ -128,13 +128,13 @@ public final class ArabicEncoder {
         int absVal32;
         int div32;
 
-        if(negative){
+        if (negative) {
             absVal32 = -iVal;
-        }else{
+        } else {
             absVal32 =  iVal;
         }
 
-        while(absVal32 >= CHUNKLIMIT){
+        while (absVal32 >= CHUNKLIMIT) {
             div32         = absVal32 / CHUNKUNIT;
             final int mod = absVal32 % CHUNKUNIT;
             absVal32 = div32;
@@ -143,7 +143,7 @@ public final class ArabicEncoder {
             cbuf[cidx--] = HECT1[mod];
         }
 
-        do{
+        do {
             div32 = (absVal32 * DIV10NUME) >>> DIV10SFT;
             //  div32 = abs32 * 52429 / 524288
             //        = floor(abs32 * 0.1000003814697265625);
@@ -152,10 +152,10 @@ public final class ArabicEncoder {
             final int mod = absVal32 % DECA;
             absVal32 = div32;
 
-            cbuf[cidx--] = (char)(mod | ARABICUC_MASK);
-        }while(div32 > 0);
+            cbuf[cidx--] = (char) (mod | ARABICUC_MASK);
+        } while (div32 > 0);
 
-        if(negative) cbuf[cidx--] = '-';
+        if (negative) cbuf[cidx--] = '-';
 
         final int result = lastPos - cidx;
 
@@ -174,7 +174,7 @@ public final class ArabicEncoder {
      * @see java.lang.Long#toString(long)
      */
     public static int long2Arabic(final long lVal, final char[] cbuf)
-            throws IndexOutOfBoundsException{
+            throws IndexOutOfBoundsException {
         int lastPos = cbuf.length - 1;
         return long2Arabic(lVal, cbuf, lastPos);
     }
@@ -196,8 +196,8 @@ public final class ArabicEncoder {
             final char[] cbuf,
             final int lastPos
     )
-            throws IndexOutOfBoundsException{
-        if(lVal == Long.MIN_VALUE){
+            throws IndexOutOfBoundsException {
+        if (lVal == Long.MIN_VALUE) {
             return cramLongMin(cbuf, lastPos);
         }
 
@@ -206,15 +206,15 @@ public final class ArabicEncoder {
         long absVal64;
         long div64;
 
-        if(negative){
+        if (negative) {
             absVal64 = -lVal;
-        }else{
+        } else {
             absVal64 =  lVal;
         }
 
-        while(absVal64 > Integer.MAX_VALUE){
-            div64         =       absVal64 / CHUNKUNIT;
-            final int mod = (int)(absVal64 % CHUNKUNIT);
+        while (absVal64 > Integer.MAX_VALUE) {
+            div64         =        absVal64 / CHUNKUNIT;
+            final int mod = (int) (absVal64 % CHUNKUNIT);
             absVal64 = div64;
 
             cbuf[cidx--] = HECT0[mod];
@@ -224,7 +224,7 @@ public final class ArabicEncoder {
         int absVal32 = (int) absVal64;
         int div32;
 
-        while(absVal32 >= CHUNKLIMIT){
+        while (absVal32 >= CHUNKLIMIT) {
             div32         = absVal32 / CHUNKUNIT;
             final int mod = absVal32 % CHUNKUNIT;
             absVal32 = div32;
@@ -233,7 +233,7 @@ public final class ArabicEncoder {
             cbuf[cidx--] = HECT1[mod];
         }
 
-        do{
+        do {
             div32 = (absVal32 * DIV10NUME) >>> DIV10SFT;
             //  div32 = abs32 * 52429 / 524288
             //        = floor(abs32 * 0.1000003814697265625);
@@ -242,10 +242,10 @@ public final class ArabicEncoder {
             final int mod = absVal32 % DECA;
             absVal32 = div32;
 
-            cbuf[cidx--] = (char)(mod | ARABICUC_MASK);
-        }while(div32 > 0);
+            cbuf[cidx--] = (char) (mod | ARABICUC_MASK);
+        } while (div32 > 0);
 
-        if(negative) cbuf[cidx--] = '-';
+        if (negative) cbuf[cidx--] = '-';
 
         final int result = lastPos - cidx;
 
@@ -262,7 +262,7 @@ public final class ArabicEncoder {
      * @see java.lang.Integer#MIN_VALUE
      */
     private static int cramIntMin(final char[] cbuf, final int lastPos)
-            throws IndexOutOfBoundsException{
+            throws IndexOutOfBoundsException {
         final int startPos = lastPos - (MINLEN_INT - 1);
         MINTXT_INT.getChars(0, MINLEN_INT, cbuf, startPos);
         return MINLEN_INT;
@@ -278,7 +278,7 @@ public final class ArabicEncoder {
      * @see java.lang.Long#MIN_VALUE
      */
     private static int cramLongMin(final char[] cbuf, final int lastPos)
-            throws IndexOutOfBoundsException{
+            throws IndexOutOfBoundsException {
         final int startPos = lastPos - (MINLEN_LONG - 1);
         MINTXT_LONG.getChars(0, MINLEN_LONG, cbuf, startPos);
         return MINLEN_LONG;
