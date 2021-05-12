@@ -19,12 +19,12 @@ import java.io.Writer;
  *
  * @see java.io.PrintWriter
  */
-public class DecimalWriter extends FilterWriter{
+public class DecimalWriter extends FilterWriter {
 
     private static final int CBUFLEN = 20;
     private static final int LASTPOS = CBUFLEN - 1;
 
-    static{
+    static {
         assert CBUFLEN == ArabicEncoder.MINLEN_LONG;
     }
 
@@ -37,7 +37,7 @@ public class DecimalWriter extends FilterWriter{
      * Constructor.
      * @param out char output stream
      */
-    public DecimalWriter(Writer out){
+    public DecimalWriter(Writer out) {
         super(out);
         this.cbuf = new char[CBUFLEN];
         this.bufLock = new Object();
@@ -54,8 +54,8 @@ public class DecimalWriter extends FilterWriter{
      * @throws IOException output error
      * @see java.io.PrintWriter#print(int)
      */
-    public void print(int iVal) throws IOException{
-        synchronized(this.bufLock){
+    public void print(int iVal) throws IOException {
+        synchronized (this.bufLock) {
             int span = ArabicEncoder.int2Arabic(iVal, this.cbuf, LASTPOS);
             int headPos = CBUFLEN - span;
             write(this.cbuf, headPos, span);
@@ -72,8 +72,8 @@ public class DecimalWriter extends FilterWriter{
      * @throws IOException output error
      * @see java.io.PrintWriter#print(long)
      */
-    public void print(long lVal) throws IOException{
-        synchronized(this.bufLock){
+    public void print(long lVal) throws IOException {
+        synchronized (this.bufLock) {
             int span = ArabicEncoder.long2Arabic(lVal, this.cbuf, LASTPOS);
             int headPos = CBUFLEN - span;
             write(this.cbuf, headPos, span);
