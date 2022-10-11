@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [1.101.12] - 2021-10-12
+
+
+### Added
+- Add Javadoc API publishing workflow for GitHub Actions.
+- Add manual trigger for GitHub Actions.
+
+### Changed
+- Modify JavaCI actions trigger for GitHub Actions.
+- Workaround MJAVADOC-700 issue.
+
+
 ## [1.101.10] - 2021-05-13
 
 ### Added
@@ -51,7 +63,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial Release
 
 
-[Unreleased]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.10...HEAD
+[Unreleased]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.12...HEAD
+[1.101.12]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.10...v1.101.12
 [1.101.10]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.8...v1.101.10
 [1.101.8]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.6...v1.101.8
 [1.101.6]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.4...v1.101.6
