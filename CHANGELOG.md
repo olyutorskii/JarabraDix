@@ -8,8 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
-## [1.101.12] - 2021-10-12
+## [1.101.14] - 2024-10-06
 
+### Fixed
+- Update Jacoco & SoftBugs for JDK23
+- Update Maven plugins
+- Update PMD & Checkstyle
+- Update GitHub workflows
+
+### Changed
+- Update unit tests from JUnit4 to JUnit5
+
+
+## [1.101.12] - 2021-10-12
 
 ### Added
 - Add Javadoc API publishing workflow for GitHub Actions.
@@ -63,7 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial Release
 
 
-[Unreleased]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.12...HEAD
+[Unreleased]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.14...HEAD
+[1.101.14]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.12...v1.101.14
 [1.101.12]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.10...v1.101.12
 [1.101.10]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.8...v1.101.10
 [1.101.8]: https://github.com/olyutorskii/JarabraDix/compare/v1.101.6...v1.101.8
