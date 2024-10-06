@@ -26,6 +26,8 @@ public final class ArabicEncoder {
     /** Required char-array length to convert any long value. */
     public static final int MINLEN_LONG = 20;
 
+    private static final long INT_MAX_ASLONG = Integer.MAX_VALUE;
+
     private static final String MINTXT_INT  =          "-2147483648";
     private static final String MINTXT_LONG = "-9223372036854775808";
 
@@ -212,7 +214,7 @@ public final class ArabicEncoder {
             absVal64 =  lVal;
         }
 
-        while (absVal64 > Integer.MAX_VALUE) {
+        while (absVal64 > INT_MAX_ASLONG) {
             div64         =        absVal64 / CHUNKUNIT;
             final int mod = (int) (absVal64 % CHUNKUNIT);
             absVal64 = div64;

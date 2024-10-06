@@ -35,6 +35,7 @@ public class DecimalWriter extends FilterWriter {
 
     /**
      * Constructor.
+     *
      * @param out char output stream
      */
     public DecimalWriter(Writer out) {
