@@ -161,6 +161,7 @@ public class DecimalSequence implements CharSequence {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -170,6 +171,7 @@ public class DecimalSequence implements CharSequence {
 
     /**
      * {@inheritDoc}
+     *
      * @param index {@inheritDoc}
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -187,6 +189,7 @@ public class DecimalSequence implements CharSequence {
 
     /**
      * {@inheritDoc}
+     *
      * @param start {@inheritDoc}
      * @param end {@inheritDoc}
      * @return {@inheritDoc}
@@ -209,6 +212,7 @@ public class DecimalSequence implements CharSequence {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
