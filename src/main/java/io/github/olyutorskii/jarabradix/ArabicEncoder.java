@@ -14,9 +14,9 @@ package io.github.olyutorskii.jarabradix;
  * <p>char buffer grows towards a younger index.
  *
  * @see <a target="_blank"
- * href="https://en.wikipedia.org/wiki/Division_algorithm#Division_by_a_constant">
- * Division by a constant (Wikipedia)
- * </a>
+ *     href="https://en.wikipedia.org/wiki/Division_algorithm#Division_by_a_constant">
+ *     Division by a constant (Wikipedia)
+ *     </a>
  */
 public final class ArabicEncoder {
 
