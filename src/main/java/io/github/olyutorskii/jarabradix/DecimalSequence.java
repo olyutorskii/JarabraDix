@@ -174,7 +174,8 @@ public class DecimalSequence implements CharSequence {
      *
      * @param index {@inheritDoc}
      * @return {@inheritDoc}
-     * @throws IndexOutOfBoundsException {@inheritDoc}
+     * @throws IndexOutOfBoundsException if the {@code index} argument
+     *     is negative or not less than the length of this string.
      */
     @Override
     public char charAt(int index)
@@ -193,7 +194,10 @@ public class DecimalSequence implements CharSequence {
      * @param start {@inheritDoc}
      * @param end {@inheritDoc}
      * @return {@inheritDoc}
-     * @throws IndexOutOfBoundsException {@inheritDoc}
+     * @throws IndexOutOfBoundsException
+     *     if {@code start} or {@code end} is negative,
+     *     if {@code end} is greater than {@code length()},
+     *     or if {@code start} is greater than {@code end}
      */
     @Override
     public CharSequence subSequence(int start, int end)
